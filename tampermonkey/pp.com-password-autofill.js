@@ -13,6 +13,6 @@
     console.log('>> Tampermonkey - Auto-fill password');
     const pwdEl = document.getElementById('password');
     if (!pwdEl.value) {
-      pwdEl.value = 'stage2@qa';
+      pwdEl.value = 'some-value';
     }
 })();
