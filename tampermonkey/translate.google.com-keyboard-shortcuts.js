@@ -13,13 +13,32 @@
     'use strict';
 
     console.log('Adding shortcuts');
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'c') {
-            const copyButton = document.evaluate("//i[contains(., 'content_copy')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext();
-            copyButton.click();
-            // copyButton.style.backgroundColor = 'yellow';
-            console.log('Text copied');
-            // copyButton.style.backgroundColor = 'inherit';
+
+    const clickButton = (xpath) => {
+        const button = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null ).iterateNext();
+        console.log('button', button);
+        if (button) {
+            button.click();
         }
+    }
+
+
+    const onKeyDown = (e, xpath, keyCode, message, actionCallback) => {
+        if (e.ctrlKey && e.key === keyCode) {
+            if (actionCallback) {
+                actionCallback();
+            } else {
+                clickButton(xpath);
+            }
+            console.log(message);
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        onKeyDown(e, '//i[contains(., \'content_copy\')]', 'c', 'Text copied');
+        onKeyDown(e, '(//span[contains(., \'volume_up\')])[8]', 'v', 'Pronounce the word');
+        onKeyDown(e, null, 'f', 'Focus on textarea', () => {
+            document.querySelector('textarea').focus();
+        });
     })
-})();
+})();)();
